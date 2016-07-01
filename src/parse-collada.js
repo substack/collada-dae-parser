@@ -20,24 +20,33 @@ function ParseCollada (colladaXML, callback) {
   var visualSceneData = parseLibraryVisualScenes(result.COLLADA.library_visual_scenes)
 
   var jointBindPoses
+  parsedObject.vertexJointWeights = []
+  parsedObject.jointNames = []
+  parsedObject.jointBindPoses = []
+  parsedObject.bindShapeMatrices = []
+
   if (result.COLLADA.library_controllers) {
     var controllerData = parseLibraryControllers(result.COLLADA.library_controllers)
-    if (controllerData.vertexJointWeights && Object.keys(controllerData.vertexJointWeights) .length > 0) {
-      parsedObject.vertexJointWeights = controllerData.vertexJointWeights
-      jointBindPoses = controllerData.jointBindPoses
-    }
+    controllerData.forEach(function (controller) {
+      parsedObject.jointNames.push(controller.jointNames)
+      parsedObject.jointBindPoses.push(controller.jointBindPoses)
+      parsedObject.bindShapeMatrices.push(controller.bindShapeMatrix)
+      parsedObject.vertexJointWeights.push(controller.vertexJointWeights)
+    })
   }
 
   // TODO: Also parse interpolation/intangent/outtangent
+  parsedObject.keyframes = []
   if (result.COLLADA.library_animations) {
-    parsedObject.keyframes = parseLocRotScaleAnim(result.COLLADA.library_animations[0].animation)
-    if (Object.keys(parsedObject.keyframes).length === 0) {
-      delete parsedObject.keyframes
-    }
-    var keyframes = parseSkeletalAnimations(result.COLLADA.library_animations, jointBindPoses, visualSceneData)
-    if (Object.keys(keyframes).length > 0) {
-      parsedObject.keyframes = keyframes
-    }
+    var kf = parseLocRotScaleAnim(result.COLLADA.library_animations[0].animation)
+    parsedObject.jointBindPoses.forEach(function (jointBindPoses) {
+      var keyframes = parseSkeletalAnimations(result.COLLADA.library_animations, jointBindPoses, visualSceneData)
+      if (keyframes) {
+        parsedObject.keyframes.push(keyframes)
+      } else if (kf) {
+        parsedObject.keyframes.push(kf)
+      }
+    })
   }
 
   // Return our parsed collada object
