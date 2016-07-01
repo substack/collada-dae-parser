@@ -46,6 +46,9 @@ function ParseCollada (colladaXML, callback) {
         parsedObject.keyframes.push(kf)
       }
     })
+    if (parsedObject.jointBindPoses.length === 0) {
+      parsedObject.keyframes.push(kf)
+    }
   }
 
   // Return our parsed collada object
