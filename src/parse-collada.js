@@ -19,7 +19,6 @@ function ParseCollada (colladaXML, callback) {
 
   var visualSceneData = parseLibraryVisualScenes(result.COLLADA.library_visual_scenes)
 
-  var jointBindPoses
   parsedObject.vertexJointWeights = []
   parsedObject.jointNames = []
   parsedObject.jointBindPoses = []

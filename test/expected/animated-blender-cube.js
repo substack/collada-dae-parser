@@ -34,6 +34,5 @@ module.exports = {
   bindShapeMatrices: [],
   jointBindPoses: [],
   jointNames: [],
-  keyframes: [],
   vertexJointWeights: []
 }
