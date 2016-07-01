@@ -2,7 +2,7 @@
 // only X and Z locations are animated
 // cube is not textured
 module.exports = {
-  keyframes: {
+  keyframes: [ {
     0: {
       location: { x: 0, y: 0, z: 0 }, rotation: { x: 0, y: 0, z: 0 }, scale: { x: 1, y: 1, z: 1 }
     },
@@ -18,7 +18,7 @@ module.exports = {
     '0.8333333': {
       location: { x: 0, y: 0, z: 0 }, rotation: { x: 0, y: 0, z: 0 }, scale: { x: 1, y: 1, z: 1 }
     }
-  },
+  } ],
   vertexNormalIndices: [
     0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5, 6, 6, 6, 7, 7, 7, 8, 8, 8, 9, 9, 9, 10, 10, 10, 11, 11, 11
   ],
@@ -30,5 +30,10 @@ module.exports = {
   ],
   vertexPositions: [
     1, 1, -1, 1, -1, -1, -1, -0.9999998, -1, -0.9999997, 1, -1, 1, 0.9999995, 1, 0.9999994, -1.000001, 1, -1, -0.9999997, 1, -1, 1, 1
-  ]
+  ],
+  bindShapeMatrices: [],
+  jointBindPoses: [],
+  jointNames: [],
+  keyframes: [],
+  vertexJointWeights: []
 }
