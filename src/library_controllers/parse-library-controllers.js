@@ -6,6 +6,7 @@ module.exports = ParseLibraryControllers
 // TODO: Read  technique_commons instead of hard coding attribute locations
 function ParseLibraryControllers (library_controllers) {
   var controllers = library_controllers[0].controller || []
+  var jointWeightOffset = 0
   return controllers.map(function (controller) {
     // Number of vertexes that need weights
     // var numVertices = controller[0].skin[0].vertex_weights[0].$.count
@@ -20,16 +21,18 @@ function ParseLibraryControllers (library_controllers) {
     // Every (joint,weight). Use jointWeightCounts to know how many to read per vertex
     var parsedVertexJointWeights = []
     var jointsAndWeights = controller.skin[0].vertex_weights[0].v[0].split(' ').map(Number)
+
     jointWeightCounts.forEach(function (_, index) {
       var numJointWeightsToRead = jointWeightCounts[index]
       parsedVertexJointWeights[index] = {}
       for (var i = 0; i < numJointWeightsToRead; i++) {
-        parsedVertexJointWeights[index][jointsAndWeights.shift()] = weightsArray[jointsAndWeights.shift()]
+        parsedVertexJointWeights[index][jointsAndWeights.shift() + jointWeightOffset] = weightsArray[jointsAndWeights.shift()]
       }
     })
 
     // All of our model's joints
     var orderedJointNames = controller.skin[0].source[0].Name_array[0]._.split(' ')
+    jointWeightOffset += orderedJointNames.length
 
     // Bind shape matrix (inverse bind matrix)
     var bindShapeMatrix = controller.skin[0].bind_shape_matrix[0].split(' ').map(Number)
